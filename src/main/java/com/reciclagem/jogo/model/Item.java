@@ -6,9 +6,6 @@ public class Item {
     private String cor;
     private String categoria; // plastico, papel, vidro, metal, organico
 
-    public Item() {
-    }
-
     public Item(int id, String nome, String cor, String categoria) {
         this.id = id;
         this.nome = nome;

@@ -5,9 +5,6 @@ public class Lixeira {
     private String categoriaAceita;
     private String nome; // "Plástico", "Papel", etc.
 
-    public Lixeira() {
-    }
-
     public Lixeira(String cor, String categoriaAceita, String nome) {
         this.cor = cor;
         this.categoriaAceita = categoriaAceita;

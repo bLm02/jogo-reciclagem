@@ -27,9 +27,6 @@ public class Main {
                     " (" + lixeira.getNome() + ")");
         }
 
-        System.out.println("\n✅ Projeto configurado com sucesso!");
-        System.out.println("Agora é só implementar a lógica do jogo!\n");
-
         // Menu interativo simples
         boolean jogando = true;
         while (jogando) {
