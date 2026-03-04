@@ -19,11 +19,39 @@ public class JogoService {
 
     private void inicializarJogo() {
         // Cadastrar itens
-        itens.add(new Item(1, "Garrafa PET", "azul", "plastico"));
-        itens.add(new Item(2, "Jornal", "amarelo", "papel"));
-        itens.add(new Item(3, "Lata de refrigerante", "vermelho", "metal"));
-        itens.add(new Item(4, "Garrafa de vidro", "verde", "vidro"));
-        itens.add(new Item(5, "Casca de banana", "marrom", "organico"));
+        itens.add(new Item(1, "Garrafa PET", "vermelho", "plastico"));
+        itens.add(new Item(2, "Pote de iogurte", "vermelho", "plastico"));
+        itens.add(new Item(3, "Sacola plástica", "vermelho", "plastico"));
+        itens.add(new Item(4, "Tampa de garrafa", "vermelho", "plastico"));
+        itens.add(new Item(5, "Copo descartável", "vermelho", "plastico"));
+
+        // === PAPEL (5 itens) - Lixeira AZUL ===
+        itens.add(new Item(6, "Jornal", "azul", "papel"));
+        itens.add(new Item(7, "Caixa de papelão", "azul", "papel"));
+        itens.add(new Item(8, "Revista", "azul", "papel"));
+        itens.add(new Item(9, "Rolo de papel higiênico", "azul", "papel"));
+        itens.add(new Item(10, "Caixa de leite", "azul", "papel"));
+
+        // === METAL (5 itens) - Lixeira AMARELA ===
+        itens.add(new Item(11, "Lata de refrigerante", "amarelo", "metal"));
+        itens.add(new Item(12, "Lata de atum", "amarelo", "metal"));
+        itens.add(new Item(13, "Papel alumínio", "amarelo", "metal"));
+        itens.add(new Item(14, "Fio de cobre", "amarelo", "metal"));
+        itens.add(new Item(15, "Tampa de metal", "amarelo", "metal"));
+
+        // === VIDRO (5 itens) - Lixeira VERDE ===
+        itens.add(new Item(16, "Garrafa de vidro", "verde", "vidro"));
+        itens.add(new Item(17, "Pote de vidro", "verde", "vidro"));
+        itens.add(new Item(18, "Garrafa de cerveja", "verde", "vidro"));
+        itens.add(new Item(19, "Caco de vidro", "verde", "vidro"));
+        itens.add(new Item(20, "Pote de geleia", "verde", "vidro"));
+
+        // === ORGÂNICO (5 itens) - Lixeira MARROM ===
+        itens.add(new Item(21, "Casca de banana", "marrom", "organico"));
+        itens.add(new Item(22, "Casca de laranja", "marrom", "organico"));
+        itens.add(new Item(23, "Saquinho de chá", "marrom", "organico"));
+        itens.add(new Item(24, "Casca de ovo", "marrom", "organico"));
+        itens.add(new Item(25, "Resto de comida", "marrom", "organico"));
 
         // Cadastrar lixeiras (cores padrão da reciclagem)
         lixeiras.add(new Lixeira("azul", "papel", "Papel"));

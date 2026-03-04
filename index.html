@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♻️ Jogo da Reciclagem - 10 Rodadas</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0b3b3f, #1b5458);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: #f0f7e6;
+            border-radius: 50px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+            width: 100%;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: #2d5a5e;
+            padding: 20px 30px;
+            border-radius: 40px;
+            color: white;
+        }
+
+        .round-info {
+            font-size: 24px;
+            font-weight: bold;
+            background: #ffb347;
+            padding: 10px 25px;
+            border-radius: 30px;
+            color: #1e3c3f;
+        }
+
+        .score-info {
+            font-size: 28px;
+            font-weight: bold;
+            background: #ff6f61;
+            padding: 10px 25px;
+            border-radius: 30px;
+        }
+
+        .attempts-info {
+            font-size: 20px;
+            background: #4a8b8f;
+            padding: 10px 25px;
+            border-radius: 30px;
+        }
+
+        .lixeira-section {
+            background: #d9e6d9;
+            border-radius: 40px;
+            padding: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lixeira-title {
+            font-size: 20px;
+            color: #1e3c3f;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .lixeira-card {
+            background: white;
+            padding: 30px;
+            border-radius: 30px;
+            display: inline-block;
+            min-width: 250px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: 4px solid;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .lixeira-card:hover {
+            transform: scale(1.02);
+        }
+
+        .lixeira-icon {
+            font-size: 80px;
+            margin-bottom: 15px;
+        }
+
+        .lixeira-nome {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .lixeira-categoria {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .itens-section {
+            margin-bottom: 30px;
+        }
+
+        .itens-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .item-card {
+            background: white;
+            border-radius: 30px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: grab;
+            transition: all 0.3s;
+            border: 3px solid #4a8b8f;
+            user-select: none;
+        }
+
+        .item-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .item-card:active {
+            cursor: grabbing;
+            opacity: 0.8;
+        }
+
+        .item-icon {
+            font-size: 50px;
+            margin-bottom: 10px;
+        }
+
+        .item-nome {
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e3c3f;
+            margin-bottom: 5px;
+        }
+
+        .item-categoria {
+            font-size: 14px;
+            color: #666;
+            background: #f0f0f0;
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .message-area {
+            background: #ffb347;
+            border-radius: 30px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            color: #1e3c3f;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .next-round-btn {
+            background: #2d5a5e;
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            display: none;
+        }
+
+        .next-round-btn:hover {
+            background: #1e3c3f;
+        }
+
+        .reset-btn {
+            background: #ff6f61;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .reset-btn:hover {
+            background: #ff4f3f;
+        }
+
+        .final-score {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 40px;
+        }
+
+        .final-score h2 {
+            font-size: 48px;
+            color: #1e3c3f;
+            margin-bottom: 20px;
+        }
+
+        .final-score p {
+            font-size: 72px;
+            font-weight: bold;
+            color: #ff6f61;
+            margin: 30px 0;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .drag-over {
+            background: #e0f0e0 !important;
+            border-color: #4CAF50 !important;
+        }
+
+        .attempts-badge {
+            display: inline-block;
+            background: #ffb347;
+            color: #1e3c3f;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container" id="gameContainer">
+        <!-- Header do jogo -->
+        <div class="header">
+            <div class="round-info" id="roundDisplay">Rodada 1/10</div>
+            <div class="score-info" id="scoreDisplay">0 pts</div>
+            <div class="attempts-info" id="attemptsDisplay">1ª tentativa: 10 pts</div>
+        </div>
+
+        <!-- Área principal do jogo -->
+        <div id="gameArea">
+            <!-- Seção da Lixeira -->
+            <div class="lixeira-section">
+                <div class="lixeira-title" id="lixeiraTitle">Arraste um item para a lixeira:</div>
+                <div class="lixeira-card" id="lixeiraAtual">
+                    <div class="lixeira-icon" id="lixeiraIcon">🗑️</div>
+                    <div class="lixeira-nome" id="lixeiraNome">Carregando...</div>
+                    <div class="lixeira-categoria" id="lixeiraCategoria">Aguardando itens</div>
+                </div>
+            </div>
+
+            <!-- Seção dos Itens -->
+            <div class="itens-section">
+                <h3 style="color: #1e3c3f; margin-bottom: 15px;">Escolha um item para reciclar:</h3>
+                <div class="itens-grid" id="itensGrid"></div>
+            </div>
+
+            <!-- Área de Mensagens -->
+            <div class="message-area" id="messageArea">
+                Arraste um item para a lixeira e veja se acertou!
+            </div>
+
+            <!-- Botão Próxima Rodada -->
+            <button class="next-round-btn" id="nextRoundBtn" onclick="proximaRodada()">▶️ PRÓXIMA RODADA</button>
+        </div>
+
+        <!-- Tela de Resultado Final -->
+        <div id="finalScoreArea" class="final-score hidden">
+            <h2>🎮 FIM DE JOGO! 🎮</h2>
+            <p id="finalScoreDisplay">0</p>
+            <button class="reset-btn" onclick="reiniciarJogo()">🔄 JOGAR NOVAMENTE</button>
+        </div>
+    </div>
+
+    <script>
+        // Estado do jogo
+        let todasLixeiras = [];
+        let todosItens = [];
+        let itensRestantes = [];
+        let lixeiraAtual = null;
+        let pontuacao = 0;
+        let rodadaAtual = 0;
+        const TOTAL_RODADAS = 10;
+        
+        // Controle de tentativas da rodada atual
+        let tentativasRodada = 0;
+        let acertouRodada = false;
+        let valoresPontuacao = [10, 5, 2, 0]; // 1ª, 2ª, 3ª tentativas e depois 0
+
+        // Elementos DOM
+        const gameArea = document.getElementById('gameArea');
+        const finalScoreArea = document.getElementById('finalScoreArea');
+        const roundDisplay = document.getElementById('roundDisplay');
+        const scoreDisplay = document.getElementById('scoreDisplay');
+        const attemptsDisplay = document.getElementById('attemptsDisplay');
+        const lixeiraNome = document.getElementById('lixeiraNome');
+        const lixeiraIcon = document.getElementById('lixeiraIcon');
+        const lixeiraCategoria = document.getElementById('lixeiraCategoria');
+        const itensGrid = document.getElementById('itensGrid');
+        const messageArea = document.getElementById('messageArea');
+        const nextRoundBtn = document.getElementById('nextRoundBtn');
+        const lixeiraCard = document.getElementById('lixeiraAtual');
+        const finalScoreDisplay = document.getElementById('finalScoreDisplay');
+
+        // Ícones para categorias
+        const icons = {
+            'plastico': '🧴',
+            'papel': '📰',
+            'metal': '🥫',
+            'vidro': '🍾',
+            'organico': '🍌',
+            'default': '📦'
+        };
+
+        const lixeiraIcons = {
+            'azul': '📘',   // papel
+            'vermelho': '🧯', // plástico
+            'verde': '🍾',   // vidro
+            'amarelo': '🥫', // metal
+            'marrom': '🍂'   // orgânico
+        };
+
+        // Inicialização
+        async function carregarDados() {
+            try {
+                // Carregar lixeiras da API
+                const responseLixeiras = await fetch('http://localhost:8080/api/lixeiras');
+                todasLixeiras = await responseLixeiras.json();
+                
+                // Carregar itens da API
+                const responseItens = await fetch('http://localhost:8080/api/itens');
+                todosItens = await responseItens.json();
+                
+                // Iniciar jogo
+                reiniciarJogo();
+            } catch (error) {
+                console.error('Erro ao carregar dados:', error);
+                messageArea.innerHTML = '❌ Erro ao conectar com o servidor. Verifique se o backend está rodando em http://localhost:8080';
+            }
+        }
+
+        function reiniciarJogo() {
+            pontuacao = 0;
+            rodadaAtual = 0;
+            tentativasRodada = 0;
+            acertouRodada = false;
+            atualizarPontuacaoDisplay();
+            
+            gameArea.classList.remove('hidden');
+            finalScoreArea.classList.add('hidden');
+            nextRoundBtn.style.display = 'none';
+            
+            // Resetar pontuação no backend
+            fetch('http://localhost:8080/api/resetar', {
+                method: 'POST'
+            }).then(() => {
+                novaRodada();
+            }).catch(error => {
+                console.error('Erro ao resetar pontuação:', error);
+                novaRodada();
+            });
+        }
+
+        function novaRodada() {
+            if (rodadaAtual >= TOTAL_RODADAS) {
+                finalizarJogo();
+                return;
+            }
+
+            rodadaAtual++;
+            tentativasRodada = 0;
+            acertouRodada = false;
+            
+            // Escolher lixeira aleatória para esta rodada
+            const indiceLixeira = Math.floor(Math.random() * todasLixeiras.length);
+            lixeiraAtual = todasLixeiras[indiceLixeira];
+            
+            // Atualizar display da lixeira
+            lixeiraNome.textContent = lixeiraAtual.nome;
+            lixeiraIcon.textContent = lixeiraIcons[lixeiraAtual.cor] || '🗑️';
+            lixeiraCategoria.textContent = `Aceita: ${lixeiraAtual.categoriaAceita}`;
+            
+            // Estilo da borda baseado na cor
+            const coresBorda = {
+                'azul': '#2196F3',
+                'vermelho': '#F44336',
+                'verde': '#4CAF50',
+                'amarelo': '#FFC107',
+                'marrom': '#795548'
+            };
+            lixeiraCard.style.borderColor = coresBorda[lixeiraAtual.cor] || '#4a8b8f';
+            
+            // Selecionar 4 itens aleatórios
+            itensRestantes = [...todosItens].sort(() => Math.random() - 0.5).slice(0, 4);
+            
+            atualizarDisplay();
+            messageArea.innerHTML = `🎯 Rodada ${rodadaAtual}/${TOTAL_RODADAS}! Arraste um item para a lixeira ${lixeiraAtual.nome}.`;
+            nextRoundBtn.style.display = 'none';
+        }
+
+        function atualizarDisplay() {
+            roundDisplay.textContent = `Rodada ${rodadaAtual}/${TOTAL_RODADAS}`;
+            atualizarPontuacaoDisplay();
+            
+            // Atualizar grid de itens
+            itensGrid.innerHTML = '';
+            itensRestantes.forEach(item => {
+                const itemCard = criarItemCard(item);
+                itensGrid.appendChild(itemCard);
+            });
+        }
+
+        function criarItemCard(item) {
+            const card = document.createElement('div');
+            card.className = 'item-card';
+            card.draggable = true;
+            card.setAttribute('data-item-id', item.id);
+            
+            // Ícone baseado na categoria
+            const icon = icons[item.categoria] || icons.default;
+            
+            card.innerHTML = `
+                <div class="item-icon">${icon}</div>
+                <div class="item-nome">${item.nome}</div>
+                <div class="item-categoria">${item.categoria}</div>
+            `;
+            
+            // Eventos de drag and drop
+            card.addEventListener('dragstart', handleDragStart);
+            card.addEventListener('dragend', handleDragEnd);
+            
+            return card;
+        }
+
+        function handleDragStart(e) {
+            e.target.classList.add('dragging');
+            e.dataTransfer.setData('text/plain', e.target.getAttribute('data-item-id'));
+        }
+
+        function handleDragEnd(e) {
+            e.target.classList.remove('dragging');
+        }
+
+        // Evento de drop na lixeira
+        lixeiraCard.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            lixeiraCard.classList.add('drag-over');
+        });
+
+        lixeiraCard.addEventListener('dragleave', () => {
+            lixeiraCard.classList.remove('drag-over');
+        });
+
+        lixeiraCard.addEventListener('drop', (e) => {
+            e.preventDefault();
+            lixeiraCard.classList.remove('drag-over');
+            
+            if (acertouRodada) {
+                messageArea.innerHTML = '⏳ Você já acertou esta rodada! Clique em "Próxima Rodada" para continuar.';
+                return;
+            }
+            
+            const itemId = e.dataTransfer.getData('text/plain');
+            processarJogada(parseInt(itemId));
+        });
+
+        async function processarJogada(itemId) {
+            if (!lixeiraAtual || acertouRodada) return;
+
+            try {
+                const response = await fetch('http://localhost:8080/api/jogar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        itemId: itemId,
+                        corLixeira: lixeiraAtual.cor
+                    })
+                });
+
+                const resultado = await response.json();
+                
+                // Encontrar o item arrastado
+                const item = todosItens.find(i => i.id === itemId);
+                
+                if (resultado.acertou) {
+                    // Calcular pontos baseado na tentativa
+                    let pontosGanhos = valoresPontuacao[tentativasRodada] || 0;
+                    pontuacao += pontosGanhos;
+                    
+                    // Remover item da lista
+                    itensRestantes = itensRestantes.filter(i => i.id !== itemId);
+                    
+                    // Mensagem de sucesso
+                    let mensagemTentativa = '';
+                    if (tentativasRodada === 0) mensagemTentativa = '✨ PERFEITO! ✨';
+                    else if (tentativasRodada === 1) mensagemTentativa = '👍 BOM!';
+                    else if (tentativasRodada === 2) mensagemTentativa = '👌 FOI POR POUCO!';
+                    
+                    messageArea.innerHTML = `🎉 ${mensagemTentativa} Você ganhou ${pontosGanhos} pontos!`;
+                    
+                    acertouRodada = true;
+                    
+                    // Atualizar pontuação
+                    await fetch('http://localhost:8080/api/resetar', {
+                        method: 'POST'
+                    });
+                    
+                    // Se não houver mais itens ou acertou, mostrar botão próxima rodada
+                    if (itensRestantes.length === 0 || acertouRodada) {
+                        nextRoundBtn.style.display = 'block';
+                    }
+                    
+                    atualizarPontuacaoDisplay();
+                    
+                } else {
+                    tentativasRodada++;
+                    
+                    if (tentativasRodada >= 3) {
+                        messageArea.innerHTML = `😢 Você errou 3 vezes! Não ganha pontos nesta rodada. Clique em "Próxima Rodada".`;
+                        acertouRodada = true; // Impede mais tentativas
+                        nextRoundBtn.style.display = 'block';
+                    } else {
+                        const proximaPontuacao = valoresPontuacao[tentativasRodada];
+                        messageArea.innerHTML = `❌ ${resultado.mensagem} Agora valendo ${proximaPontuacao} pontos.`;
+                    }
+                    
+                    // Atualizar display de tentativas
+                    const tentativaTexto = ['primeira', 'segunda', 'terceira'][tentativasRodada - 1];
+                    if (tentativasRodada < 3) {
+                        attemptsDisplay.textContent = `${tentativasRodada + 1}ª tentativa: ${valoresPontuacao[tentativasRodada]} pts`;
+                    } else {
+                        attemptsDisplay.textContent = `Sem pontos nesta rodada`;
+                    }
+                }
+            } catch (error) {
+                console.error('Erro ao processar jogada:', error);
+                messageArea.innerHTML = '❌ Erro ao processar jogada. Tente novamente.';
+            }
+        }
+
+        function atualizarPontuacaoDisplay() {
+            scoreDisplay.textContent = `${pontuacao} pts`;
+            attemptsDisplay.textContent = tentativasRodada === 0 ? '1ª tentativa: 10 pts' :
+                                         tentativasRodada === 1 ? '2ª tentativa: 5 pts' :
+                                         tentativasRodada === 2 ? '3ª tentativa: 2 pts' :
+                                         'Sem pontos';
+        }
+
+        function proximaRodada() {
+            if (rodadaAtual < TOTAL_RODADAS) {
+                novaRodada();
+            } else {
+                finalizarJogo();
+            }
+        }
+
+        function finalizarJogo() {
+            gameArea.classList.add('hidden');
+            finalScoreArea.classList.remove('hidden');
+            finalScoreDisplay.textContent = pontuacao;
+            
+            // Mensagem especial baseada na pontuação máxima possível (10 rodadas * 10 pontos = 100)
+            if (pontuacao === 100) {
+                messageArea.innerHTML = '🏆 PERFEITO! Você é um mestre da reciclagem! 🏆';
+            } else if (pontuacao >= 80) {
+                messageArea.innerHTML = '🌟 Excelente! Quase perfeito! 🌟';
+            } else if (pontuacao >= 50) {
+                messageArea.innerHTML = '👍 Bom trabalho! Continue aprendendo! 👍';
+            } else {
+                messageArea.innerHTML = '🌱 Pratique mais e você vai melhorar! 🌱';
+            }
+        }
+
+        // Iniciar o jogo quando a página carregar
+        window.onload = carregarDados;
+    </script>
+</body>
+</html>
