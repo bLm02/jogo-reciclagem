@@ -33,6 +33,33 @@
             box-shadow:0 20px 40px rgba(0,0,0,0.3);
             max-width:1000px;
             width:100%;
+            position:relative;
+        }
+
+        .manual-btn{
+            position:absolute;
+            top:20px;
+            right:20px;
+            width:50px;
+            height:50px;
+            border-radius:50%;
+            border:none;
+            background:#ffb347;
+            color:#1e3c3f;
+            font-size:30px;
+            font-weight:bold;
+            cursor:pointer;
+            box-shadow:0 5px 15px rgba(0,0,0,0.25);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            text-decoration:none;
+            transition:transform 0.3s, background 0.3s;
+        }
+
+        .manual-btn:hover{
+            transform:scale(1.1);
+            background:#ffd27f;
         }
 
         .header{
@@ -102,24 +129,22 @@
         }
 
         .lixeira-icon{
-            margin-bottom:15px;
+            margin-bottom:0;
         }
 
         .lixeira-icon img{
-            width:80px;
-            height:80px;
+            width:220px;
+            height:220px;
             object-fit:contain;
+            display:block;
         }
 
         .lixeira-nome{
-            font-size:28px;
-            font-weight:bold;
-            margin-bottom:5px;
+            display:none;
         }
 
         .lixeira-categoria{
-            font-size:18px;
-            color:#666;
+            display:none;
         }
 
         .itens-section{
@@ -233,6 +258,10 @@
 <body>
 
 <div class="game-container">
+
+    <a class="manual-btn" href="manual_jogo_reciclagem.html" target="_blank" title="Abrir manual do jogo">
+        ?
+    </a>
 
     <div class="header">
         <div class="round-info" id="roundDisplay">Rodada 1/10</div>
@@ -378,14 +407,21 @@
         const indice=Math.floor(Math.random()*todasLixeiras.length);
         lixeiraAtual=todasLixeiras[indice];
 
-        lixeiraNome.textContent=lixeiraAtual.nome;
+            lixeiraNome.textContent="";
 
-        lixeiraIcon.innerHTML=lixeiraIcons[lixeiraAtual.cor] || "🗑️";
+            lixeiraIcon.innerHTML=lixeiraIcons[lixeiraAtual.cor] || "🗑️";
 
-        lixeiraCategoria.textContent=`Aceita: ${lixeiraAtual.categoriaAceita}`;
+            lixeiraCategoria.textContent="";
 
-        const itensCorretos=todosItens.filter(item=>item.categoria===lixeiraAtual.categoriaAceita);
-        const itensIncorretos=todosItens.filter(item=>item.categoria!==lixeiraAtual.categoriaAceita);
+        const categoriaCorreta=lixeiraAtual.categoriaAceita.trim().toLowerCase();
+
+        const itensCorretos=todosItens.filter(item=>
+            item.categoria.trim().toLowerCase()===categoriaCorreta
+        );
+
+        const itensIncorretos=todosItens.filter(item=>
+            item.categoria.trim().toLowerCase()!==categoriaCorreta
+        );
 
         const itemCorreto=itensCorretos[Math.floor(Math.random()*itensCorretos.length)];
 
@@ -447,15 +483,16 @@
 
         const item=todosItens.find(i=>i.id===id);
 
-        if(item.categoria===lixeiraAtual.categoriaAceita){
+        const categoriaItem=item.categoria.trim().toLowerCase();
+        const categoriaCorreta=lixeiraAtual.categoriaAceita.trim().toLowerCase();
+
+        if(categoriaItem===categoriaCorreta){
 
             pontuacao+=valoresPontuacao[tentativasRodada];
 
             messageArea.innerHTML="🎉 ACERTOU!";
 
             nextRoundBtn.style.display="block";
-
-            acertouRodada=true;
 
             scoreDisplay.textContent=`${pontuacao} pts`;
 
