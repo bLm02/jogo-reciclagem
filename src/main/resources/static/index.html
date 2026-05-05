@@ -380,13 +380,24 @@
 
         lixeiraNome.textContent=lixeiraAtual.nome;
 
-        /* CORREÇÃO PRINCIPAL */
-
         lixeiraIcon.innerHTML=lixeiraIcons[lixeiraAtual.cor] || "🗑️";
 
         lixeiraCategoria.textContent=`Aceita: ${lixeiraAtual.categoriaAceita}`;
 
-        itensRestantes=[...todosItens].sort(()=>Math.random()-0.5).slice(0,4);
+        const itensCorretos=todosItens.filter(item=>item.categoria===lixeiraAtual.categoriaAceita);
+        const itensIncorretos=todosItens.filter(item=>item.categoria!==lixeiraAtual.categoriaAceita);
+
+        const itemCorreto=itensCorretos[Math.floor(Math.random()*itensCorretos.length)];
+
+        const tresItensIncorretos=[...itensIncorretos]
+            .sort(()=>Math.random()-0.5)
+            .slice(0,3);
+
+        itensRestantes=[itemCorreto,...tresItensIncorretos]
+            .sort(()=>Math.random()-0.5);
+
+        messageArea.innerHTML="Arraste um item para a lixeira";
+        nextRoundBtn.style.display="none";
 
         atualizarDisplay();
 
