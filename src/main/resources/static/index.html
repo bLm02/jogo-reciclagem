@@ -23,30 +23,32 @@
             display:flex;
             justify-content:center;
             align-items:center;
-            padding:20px;
+            padding:10px;
         }
 
         .game-container{
             background:#f0f7e6;
-            border-radius:50px;
-            padding:30px;
+            border-radius:35px;
+            padding:18px 25px;
             box-shadow:0 20px 40px rgba(0,0,0,0.3);
             max-width:1000px;
             width:100%;
+            max-height:calc(100vh - 20px);
+            overflow:auto;
             position:relative;
         }
 
         .manual-btn{
             position:absolute;
-            top:20px;
-            right:20px;
-            width:50px;
-            height:50px;
+            top:15px;
+            right:15px;
+            width:42px;
+            height:42px;
             border-radius:50%;
             border:none;
             background:#ffb347;
             color:#1e3c3f;
-            font-size:30px;
+            font-size:26px;
             font-weight:bold;
             cursor:pointer;
             box-shadow:0 5px 15px rgba(0,0,0,0.25);
@@ -66,63 +68,63 @@
             display:flex;
             justify-content:space-between;
             align-items:center;
-            margin-bottom:30px;
+            margin-bottom:15px;
             background:#2d5a5e;
-            padding:20px 30px;
-            border-radius:40px;
+            padding:12px 25px;
+            border-radius:30px;
             color:white;
         }
 
         .round-info{
-            font-size:24px;
+            font-size:20px;
             font-weight:bold;
             background:#ffb347;
-            padding:10px 25px;
+            padding:8px 20px;
             border-radius:30px;
             color:#1e3c3f;
         }
 
         .score-info{
-            font-size:28px;
+            font-size:22px;
             font-weight:bold;
             background:#ff6f61;
-            padding:10px 25px;
+            padding:8px 20px;
             border-radius:30px;
         }
 
         .attempts-info{
-            font-size:20px;
+            font-size:18px;
             background:#4a8b8f;
-            padding:10px 25px;
+            padding:8px 20px;
             border-radius:30px;
         }
 
         .lixeira-section{
             background:#d9e6d9;
-            border-radius:40px;
-            padding:30px;
-            margin-bottom:30px;
+            border-radius:30px;
+            padding:12px;
+            margin-bottom:15px;
             text-align:center;
         }
 
         .lixeira-title{
-            font-size:20px;
+            font-size:18px;
             color:#1e3c3f;
-            margin-bottom:15px;
+            margin-bottom:5px;
             font-weight:bold;
         }
 
         .lixeira-card{
-            background:white;
-            padding:30px;
-            border-radius:30px;
-            display:inline-block;
-            min-width:250px;
-            box-shadow:0 10px 20px rgba(0,0,0,0.1);
-            border:4px solid;
-            cursor:pointer;
-            transition:transform 0.3s;
-        }
+        background:#d9e6d9;
+        padding:0;
+        border-radius:30px;
+        display:inline-block;
+        min-width:auto;
+        box-shadow:none;
+        border:none;
+        cursor:pointer;
+        transition:transform 0.3s;
+    }
 
         .lixeira-card:hover{
             transform:scale(1.02);
@@ -133,8 +135,8 @@
         }
 
         .lixeira-icon img{
-            width:220px;
-            height:220px;
+            width:260px;
+            height:260px;
             object-fit:contain;
             display:block;
         }
@@ -148,20 +150,20 @@
         }
 
         .itens-section{
-            margin-bottom:30px;
+            margin-bottom:15px;
         }
 
         .itens-grid{
             display:grid;
             grid-template-columns:repeat(4,1fr);
-            gap:20px;
-            margin-top:20px;
+            gap:12px;
+            margin-top:10px;
         }
 
         .item-card{
             background:white;
-            border-radius:30px;
-            padding:20px;
+            border-radius:22px;
+            padding:12px;
             text-align:center;
             box-shadow:0 5px 15px rgba(0,0,0,0.1);
             cursor:grab;
@@ -176,36 +178,42 @@
         }
 
         .item-icon{
-            font-size:50px;
-            margin-bottom:10px;
+            width:75px;
+            height:75px;
+            margin:0 auto 6px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+
+        .item-icon img{
+            width:75px;
+            height:75px;
+            object-fit:contain;
+            display:block;
         }
 
         .item-nome{
-            font-size:18px;
+            font-size:16px;
             font-weight:bold;
             color:#1e3c3f;
-            margin-bottom:5px;
+            margin-bottom:0;
         }
 
         .item-categoria{
-            font-size:14px;
-            color:#666;
-            background:#f0f0f0;
-            display:inline-block;
-            padding:5px 15px;
-            border-radius:20px;
+            display:none;
         }
 
         .message-area{
             background:#ffb347;
-            border-radius:30px;
-            padding:20px;
-            margin:20px 0;
+            border-radius:25px;
+            padding:12px;
+            margin:12px 0;
             text-align:center;
-            font-size:22px;
+            font-size:20px;
             font-weight:bold;
             color:#1e3c3f;
-            min-height:80px;
+            min-height:55px;
             display:flex;
             align-items:center;
             justify-content:center;
@@ -215,10 +223,10 @@
             background:#2d5a5e;
             color:white;
             border:none;
-            padding:20px 40px;
-            font-size:24px;
+            padding:14px 30px;
+            font-size:22px;
             font-weight:bold;
-            border-radius:40px;
+            border-radius:30px;
             cursor:pointer;
             width:100%;
             display:none;
@@ -253,6 +261,15 @@
         }
 
     </style>
+    <script>
+        function normalizarTexto(texto){
+            return texto
+                .trim()
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g,'');
+        }
+    </script>
 </head>
 
 <body>
@@ -265,8 +282,8 @@
 
     <div class="header">
         <div class="round-info" id="roundDisplay">Rodada 1/10</div>
-        <div class="score-info" id="scoreDisplay">0 pts</div>
-        <div class="attempts-info" id="attemptsDisplay">1ª tentativa: 10 pts</div>
+        <div class="score-info" id="scoreDisplay">0 Pontos</div>
+        <div class="attempts-info" id="attemptsDisplay">1ª tentativa: 10 pontos</div>
     </div>
 
     <div id="gameArea">
@@ -354,13 +371,38 @@
     const finalScoreDisplay=document.getElementById('finalScoreDisplay');
 
     const itemIcons={
-        plastico:'🧴',
-        papel:'📰',
-        metal:'🥫',
-        vidro:'🍾',
-        organico:'🍌',
-        default:'📦'
-    };
+            "papel aluminio":"<img src='images/lixos/Metal/_Papel alumínio.png' alt='Papel alumínio'>",
+            "fio de cobre":"<img src='images/lixos/Metal/Fio de cobre.png' alt='Fio de cobre'>",
+            "lata de atum":"<img src='images/lixos/Metal/Lata de atum.png' alt='Lata de atum'>",
+            "lata de refrigerante":"<img src='images/lixos/Metal/Lata de refrigerante.png' alt='Lata de refrigerante'>",
+            "tampa de metal":"<img src='images/lixos/Metal/Tampa de metal.png' alt='Tampa de metal'>",
+
+            "casca de banana":"<img src='images/lixos/Organico/casca de banana.png' alt='Casca de banana'>",
+            "casca de laranja":"<img src='images/lixos/Organico/casca de laranja.png' alt='Casca de laranja'>",
+            "casca de ovo":"<img src='images/lixos/Organico/casca de ovo.png' alt='Casca de ovo'>",
+            "resto de comida":"<img src='images/lixos/Organico/resto de comida.png' alt='Resto de comida'>",
+            "saquinho de cha":"<img src='images/lixos/Organico/Saquinho de chá.png' alt='Saquinho de chá'>",
+
+            "caixa de leite":"<img src='images/lixos/Papel/Caixa de leite.png' alt='Caixa de leite'>",
+            "caixa de papelao":"<img src='images/lixos/Papel/Caixa de papelão.png' alt='Caixa de papelão'>",
+            "jornal":"<img src='images/lixos/Papel/Jornal.png' alt='Jornal'>",
+            "revista":"<img src='images/lixos/Papel/Revista.png' alt='Revista'>",
+            "rolo de papel higienico":"<img src='images/lixos/Papel/Rolo de papel higiênico.png' alt='Rolo de papel higiênico'>",
+
+            "copo descartavel":"<img src='images/lixos/Plastico/Copo descartável.png' alt='Copo descartável'>",
+            "garrafa pet":"<img src='images/lixos/Plastico/Garrafa PET.png' alt='Garrafa PET'>",
+            "pote de iogurte":"<img src='images/lixos/Plastico/Pote de iogurte.png' alt='Pote de iogurte'>",
+            "sacola plastica":"<img src='images/lixos/Plastico/Sacola plastica.png' alt='Sacola plastica'>",
+            "tampa de garrafa":"<img src='images/lixos/Plastico/Tampa de garrafa.png' alt='Tampa de garrafa'>",
+
+            "caco de vidro":"<img src='images/lixos/Vidro/Caco de vidro.png' alt='Caco de vidro'>",
+            "garrafa de cerveja":"<img src='images/lixos/Vidro/Garrafa de cerveja.png' alt='Garrafa de cerveja'>",
+            "garrafa de vidro":"<img src='images/lixos/Vidro/Garrafa de vidro.png' alt='Garrafa de vidro'>",
+            "pote de geleia":"<img src='images/lixos/Vidro/Pote de geleia.png' alt='Pote de geleia'>",
+            "pote de vidro":"<img src='images/lixos/Vidro/Pote de vidro.png' alt='Pote de vidro'>",
+
+            default:"📦"
+        };
 
     const lixeiraIcons={
         azul:"<img src='images/lixeiras/Papel.jpeg'>",
@@ -386,12 +428,30 @@
 
         pontuacao=0;
         rodadaAtual=0;
+        tentativasRodada=0;
+        acertouRodada=false;
+
+        document.getElementById('gameArea').classList.remove('hidden');
+        finalScoreArea.classList.add('hidden');
+
+        scoreDisplay.textContent="0 Pontos";
+        messageArea.innerHTML="Arraste um item para a lixeira";
+        nextRoundBtn.style.display="none";
 
         novaRodada();
 
     }
 
-    function novaRodada(){
+        function atualizarTentativas(){
+
+            const tentativaAtual=tentativasRodada+1;
+            const pontosAtual=valoresPontuacao[tentativasRodada] || 0;
+
+            attemptsDisplay.textContent=`${tentativaAtual}ª tentativa: ${pontosAtual} pontos`;
+
+        }
+
+        function novaRodada(){
 
         if(rodadaAtual>=TOTAL_RODADAS){
 
@@ -400,12 +460,14 @@
 
         }
 
-        rodadaAtual++;
-        tentativasRodada=0;
-        acertouRodada=false;
+            rodadaAtual++;
+            tentativasRodada=0;
+            acertouRodada=false;
 
-        const indice=Math.floor(Math.random()*todasLixeiras.length);
-        lixeiraAtual=todasLixeiras[indice];
+            atualizarTentativas();
+
+            const indice=Math.floor(Math.random()*todasLixeiras.length);
+            lixeiraAtual=todasLixeiras[indice];
 
             lixeiraNome.textContent="";
 
@@ -452,10 +514,10 @@
             card.draggable=true;
 
             card.innerHTML=`
-<div class="item-icon">${itemIcons[item.categoria]}</div>
-<div class="item-nome">${item.nome}</div>
-<div class="item-categoria">${item.categoria}</div>
-`;
+    <div class="item-icon">${itemIcons[normalizarTexto(item.nome)] || itemIcons.default}</div>
+    <div class="item-nome">${item.nome}</div>
+    <div class="item-categoria">${item.categoria}</div>
+    `;
 
             card.addEventListener('dragstart',e=>{
                 e.dataTransfer.setData('id',item.id);
@@ -494,11 +556,13 @@
 
             nextRoundBtn.style.display="block";
 
-            scoreDisplay.textContent=`${pontuacao} pts`;
+            scoreDisplay.textContent=`${pontuacao} Pontos`;
 
         }else{
 
             tentativasRodada++;
+
+            atualizarTentativas();
 
             messageArea.innerHTML="❌ ERROU!";
 
