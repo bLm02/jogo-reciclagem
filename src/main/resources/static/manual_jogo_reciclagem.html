@@ -1,403 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual do Jogo de Reciclagem</title>
 
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap');
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&family=Fredoka+One&display=swap');
 
-  .manual-root {
-    font-family: 'Nunito', sans-serif;
-    background: #f0faf0;
-    min-height: 100vh;
-    padding: 0;
-    color: #1e3c3f;
-  }
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
 
-  .hero {
-    background: linear-gradient(135deg, #2d5a5e 0%, #1a3a3e 100%);
-    padding: 40px 24px 60px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
+    .manual-root {
+      font-family: 'Nunito', sans-serif;
+      background: #f0faf0;
+      min-height: 100vh;
+      padding: 0;
+      color: #1e3c3f;
+    }
 
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -40px; left: -40px;
-    width: 200px; height: 200px;
-    background: rgba(255,255,255,0.05);
-    border-radius: 50%;
-  }
+    .hero {
+      background: linear-gradient(135deg, #2d5a5e 0%, #1a3a3e 100%);
+      padding: 40px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
 
-  .hero::after {
-    content: '';
-    position: absolute;
-    bottom: -60px; right: -30px;
-    width: 250px; height: 250px;
-    background: rgba(255,255,255,0.04);
-    border-radius: 50%;
-  }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      width: 200px;
+      height: 200px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 50%;
+    }
 
-  .hero-badge {
-    display: inline-block;
-    background: #4caf84;
-    color: white;
-    font-size: 13px;
-    font-weight: 800;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    padding: 6px 18px;
-    border-radius: 30px;
-    margin-bottom: 16px;
-  }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px;
+      right: -30px;
+      width: 250px;
+      height: 250px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 50%;
+    }
 
-  .hero h1 {
-    font-family: 'Fredoka One', cursive;
-    font-size: 38px;
-    color: white;
-    margin: 0 0 10px;
-    line-height: 1.1;
-  }
+    .hero-badge {
+      display: inline-block;
+      background: #4caf84;
+      color: white;
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 30px;
+      margin-bottom: 16px;
+    }
 
-  .hero p {
-    color: rgba(255,255,255,0.75);
-    font-size: 16px;
-    margin: 0;
-  }
+    .hero h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 38px;
+      color: white;
+      margin: 0 0 10px;
+      line-height: 1.1;
+    }
 
-  .hero-icons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-top: 24px;
-    flex-wrap: wrap;
-  }
+    .hero p {
+      color: rgba(255,255,255,0.75);
+      font-size: 16px;
+      margin: 0;
+    }
 
-  .bin-pill {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 800;
-    color: white;
-  }
+    .hero-icons {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
 
-  .bin-dot {
-    width: 12px; height: 12px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.5);
-  }
+    .bin-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 800;
+      color: white;
+    }
 
-  .nav-tabs {
-    display: flex;
-    overflow-x: auto;
-    background: white;
-    border-bottom: 2px solid #e0ede0;
-    padding: 0 16px;
-    gap: 0;
-    scrollbar-width: none;
-  }
+    .bin-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+    }
 
-  .nav-tabs::-webkit-scrollbar { display: none; }
+    .nav-tabs {
+      display: flex;
+      overflow-x: auto;
+      background: white;
+      border-bottom: 2px solid #e0ede0;
+      padding: 0 16px;
+      gap: 0;
+      scrollbar-width: none;
+    }
 
-  .nav-tab {
-    flex: 0 0 auto;
-    padding: 14px 20px;
-    font-size: 14px;
-    font-weight: 700;
-    color: #888;
-    cursor: pointer;
-    border-bottom: 3px solid transparent;
-    white-space: nowrap;
-    transition: all 0.2s;
-    background: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    font-family: 'Nunito', sans-serif;
-  }
+    .nav-tabs::-webkit-scrollbar {
+      display: none;
+    }
 
-  .nav-tab.active {
-    color: #2d5a5e;
-    border-bottom-color: #4caf84;
-  }
+    .nav-tab {
+      flex: 0 0 auto;
+      padding: 14px 20px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #888;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      transition: all 0.2s;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: 'Nunito', sans-serif;
+    }
 
-  .nav-tab:hover:not(.active) {
-    color: #2d5a5e;
-    background: #f0faf0;
-  }
+    .nav-tab.active {
+      color: #2d5a5e;
+      border-bottom-color: #4caf84;
+    }
 
-  .section {
-    display: none;
-    padding: 24px 20px;
-    max-width: 700px;
-    margin: 0 auto;
-  }
+    .nav-tab:hover:not(.active) {
+      color: #2d5a5e;
+      background: #f0faf0;
+    }
 
-  .section.active { display: block; }
+    .section {
+      display: none;
+      padding: 24px 20px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
 
-  .step-card {
-    background: white;
-    border-radius: 20px;
-    padding: 20px;
-    margin-bottom: 16px;
-    border: 1.5px solid #d4e8d4;
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-  }
+    .section.active {
+      display: block;
+    }
 
-  .step-num {
-    flex: 0 0 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: #2d5a5e;
-    color: white;
-    font-family: 'Fredoka One', cursive;
-    font-size: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+    .step-card {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 16px;
+      border: 1.5px solid #d4e8d4;
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
 
-  .step-text h3 {
-    font-size: 16px;
-    font-weight: 800;
-    color: #1e3c3f;
-    margin: 0 0 5px;
-  }
+    .step-num {
+      flex: 0 0 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #2d5a5e;
+      color: white;
+      font-family: 'Fredoka One', cursive;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .step-text p {
-    font-size: 14px;
-    color: #555;
-    margin: 0;
-    line-height: 1.5;
-  }
+    .step-text h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e3c3f;
+      margin: 0 0 5px;
+    }
 
-  .step-icon {
-    font-size: 28px;
-    margin-right: 4px;
-  }
+    .step-text p {
+      font-size: 14px;
+      color: #555;
+      margin: 0;
+      line-height: 1.5;
+    }
 
-  .score-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin: 16px 0;
-  }
+    .step-icon {
+      font-size: 28px;
+      margin-right: 4px;
+    }
 
-  .score-card {
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    text-align: center;
-    border: 1.5px solid #d4e8d4;
-  }
+    .score-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
 
-  .score-val {
-    font-family: 'Fredoka One', cursive;
-    font-size: 36px;
-    line-height: 1;
-  }
+    .score-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      border: 1.5px solid #d4e8d4;
+    }
 
-  .score-label {
-    font-size: 12px;
-    color: #777;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 4px;
-  }
+    .score-val {
+      font-family: 'Fredoka One', cursive;
+      font-size: 36px;
+      line-height: 1;
+    }
 
-  .score-sub {
-    font-size: 12px;
-    color: #aaa;
-    margin-top: 2px;
-  }
+    .score-label {
+      font-size: 12px;
+      color: #777;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 4px;
+    }
 
-  .bin-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 12px;
-    margin: 16px 0;
-  }
+    .score-sub {
+      font-size: 12px;
+      color: #aaa;
+      margin-top: 2px;
+    }
 
-  .bin-card {
-    border-radius: 16px;
-    padding: 16px 12px;
-    text-align: center;
-    border: 2px solid;
-  }
+    .bin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 12px;
+      margin: 16px 0;
+    }
 
-  .bin-card .bin-emoji { font-size: 32px; margin-bottom: 8px; }
-  .bin-card .bin-name { font-size: 14px; font-weight: 800; margin-bottom: 6px; }
-  .bin-card .bin-items { font-size: 11px; line-height: 1.5; color: #555; }
+    .bin-card {
+      border-radius: 16px;
+      padding: 16px 12px;
+      text-align: center;
+      border: 2px solid;
+    }
 
-  .bin-azul { background: #e6f0ff; border-color: #5b8dd9; }
-  .bin-azul .bin-name { color: #2a5db0; }
+    .bin-card .bin-emoji {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
 
-  .bin-vermelho { background: #ffe6e6; border-color: #d95b5b; }
-  .bin-vermelho .bin-name { color: #b02a2a; }
+    .bin-card .bin-name {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
 
-  .bin-amarelo { background: #fff8e0; border-color: #d9b85b; }
-  .bin-amarelo .bin-name { color: #a07a10; }
+    .bin-card .bin-items {
+      font-size: 11px;
+      line-height: 1.5;
+      color: #555;
+    }
 
-  .bin-verde { background: #e6fde8; border-color: #5bd96a; }
-  .bin-verde .bin-name { color: #1e8a2d; }
+    .bin-azul {
+      background: #e6f0ff;
+      border-color: #5b8dd9;
+    }
 
-  .bin-marrom { background: #f5ede0; border-color: #b08050; }
-  .bin-marrom .bin-name { color: #7a4f20; }
+    .bin-azul .bin-name {
+      color: #2a5db0;
+    }
 
-  .tip-box {
-    background: #fffbe6;
-    border: 1.5px solid #f5cc5b;
-    border-radius: 16px;
-    padding: 16px 20px;
-    margin: 16px 0;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-  }
+    .bin-vermelho {
+      background: #ffe6e6;
+      border-color: #d95b5b;
+    }
 
-  .tip-icon { font-size: 24px; flex: 0 0 auto; }
-  .tip-text { font-size: 14px; color: #5a4a00; line-height: 1.5; }
-  .tip-text strong { color: #3a3000; }
+    .bin-vermelho .bin-name {
+      color: #b02a2a;
+    }
 
-  .result-card {
-    background: white;
-    border-radius: 16px;
-    padding: 16px;
-    margin-bottom: 10px;
-    border-left: 5px solid;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+    .bin-amarelo {
+      background: #fff8e0;
+      border-color: #d9b85b;
+    }
 
-  .result-icon { font-size: 28px; }
-  .result-text h4 { font-size: 15px; font-weight: 800; margin: 0 0 3px; }
-  .result-text p { font-size: 13px; color: #666; margin: 0; }
+    .bin-amarelo .bin-name {
+      color: #a07a10;
+    }
 
-  .section-title {
-    font-family: 'Fredoka One', cursive;
-    font-size: 24px;
-    color: #2d5a5e;
-    margin: 0 0 6px;
-  }
+    .bin-verde {
+      background: #e6fde8;
+      border-color: #5bd96a;
+    }
 
-  .section-sub {
-    font-size: 14px;
-    color: #888;
-    margin: 0 0 20px;
-  }
+    .bin-verde .bin-name {
+      color: #1e8a2d;
+    }
 
-  .drag-demo {
-    background: white;
-    border-radius: 20px;
-    padding: 24px;
-    border: 1.5px solid #d4e8d4;
-    text-align: center;
-    margin: 16px 0;
-  }
+    .bin-marrom {
+      background: #f5ede0;
+      border-color: #b08050;
+    }
 
-  .drag-item-demo {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: #f0faf0;
-    border: 2px dashed #4caf84;
-    border-radius: 12px;
-    padding: 10px 20px;
-    font-size: 15px;
-    font-weight: 700;
-    color: #2d5a5e;
-    cursor: grab;
-    margin: 8px;
-    animation: pulse-border 2s infinite;
-  }
+    .bin-marrom .bin-name {
+      color: #7a4f20;
+    }
 
-  @keyframes pulse-border {
-    0%, 100% { border-color: #4caf84; }
-    50% { border-color: #2d5a5e; }
-  }
+    .tip-box {
+      background: #fffbe6;
+      border: 1.5px solid #f5cc5b;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
 
-  .arrow-demo {
-    font-size: 28px;
-    color: #4caf84;
-    margin: 8px 0;
-    animation: bounce-down 1s infinite;
-  }
+    .tip-icon {
+      font-size: 24px;
+      flex: 0 0 auto;
+    }
 
-  @keyframes bounce-down {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(6px); }
-  }
+    .tip-text {
+      font-size: 14px;
+      color: #5a4a00;
+      line-height: 1.5;
+    }
 
-  .lixeira-demo {
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    background: #e6fde8;
-    border: 3px solid #5bd96a;
-    border-radius: 16px;
-    padding: 14px 24px;
-    font-size: 14px;
-    font-weight: 800;
-    color: #1e8a2d;
-  }
+    .tip-text strong {
+      color: #3a3000;
+    }
 
-  .stars-row {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin: 12px 0;
-  }
+    .result-card {
+      background: white;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 10px;
+      border-left: 5px solid;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
 
-  .star-badge {
-    background: #2d5a5e;
-    color: white;
-    border-radius: 30px;
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
+    .result-icon {
+      font-size: 28px;
+    }
 
-  .star-badge.gold { background: #e6a800; }
-  .star-badge.silver { background: #7a8a8b; }
-  .star-badge.bronze { background: #a06030; }
+    .result-text h4 {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 0 0 3px;
+    }
 
-  .mini-header {
-    font-size: 13px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #4caf84;
-    margin: 20px 0 10px;
-  }
-</style>
+    .result-text p {
+      font-size: 13px;
+      color: #666;
+      margin: 0;
+    }
 
+    .section-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 24px;
+      color: #2d5a5e;
+      margin: 0 0 6px;
+    }
+
+    .section-sub {
+      font-size: 14px;
+      color: #888;
+      margin: 0 0 20px;
+    }
+
+    .drag-demo {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1.5px solid #d4e8d4;
+      text-align: center;
+      margin: 16px 0;
+    }
+
+    .drag-item-demo {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f0faf0;
+      border: 2px dashed #4caf84;
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #2d5a5e;
+      cursor: grab;
+      margin: 8px;
+      animation: pulse-border 2s infinite;
+    }
+
+    @keyframes pulse-border {
+      0%, 100% {
+        border-color: #4caf84;
+      }
+
+      50% {
+        border-color: #2d5a5e;
+      }
+    }
+
+    .arrow-demo {
+      font-size: 28px;
+      color: #4caf84;
+      margin: 8px 0;
+      animation: bounce-down 1s infinite;
+    }
+
+    @keyframes bounce-down {
+      0%, 100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(6px);
+      }
+    }
+
+    .lixeira-demo {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      background: #e6fde8;
+      border: 3px solid #5bd96a;
+      border-radius: 16px;
+      padding: 14px 24px;
+      font-size: 14px;
+      font-weight: 800;
+      color: #1e8a2d;
+    }
+
+    .stars-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+
+    .star-badge {
+      background: #2d5a5e;
+      color: white;
+      border-radius: 30px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .star-badge.gold {
+      background: #e6a800;
+    }
+
+    .star-badge.silver {
+      background: #7a8a8b;
+    }
+
+    .star-badge.bronze {
+      background: #a06030;
+    }
+
+    .mini-header {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #4caf84;
+      margin: 20px 0 10px;
+    }
+  </style>
+</head>
+
+<body>
 <div class="manual-root">
   <div class="hero">
     <div class="hero-badge">♻️ Manual do Jogador</div>
     <h1>Jogo de Reciclagem</h1>
     <p>Aprenda a reciclar jogando — e vire um campeão do meio ambiente!</p>
+
     <div class="hero-icons">
-      <div class="bin-pill" style="background:#2a5db0"><div class="bin-dot"></div> Papel</div>
-      <div class="bin-pill" style="background:#b02a2a"><div class="bin-dot"></div> Plástico</div>
-      <div class="bin-pill" style="background:#a07a10"><div class="bin-dot"></div> Metal</div>
-      <div class="bin-pill" style="background:#1e8a2d"><div class="bin-dot"></div> Vidro</div>
-      <div class="bin-pill" style="background:#7a4f20"><div class="bin-dot"></div> Orgânico</div>
+      <div class="bin-pill" style="background:#2a5db0">
+        <div class="bin-dot"></div>
+        Papel
+      </div>
+
+      <div class="bin-pill" style="background:#b02a2a">
+        <div class="bin-dot"></div>
+        Plástico
+      </div>
+
+      <div class="bin-pill" style="background:#a07a10">
+        <div class="bin-dot"></div>
+        Metal
+      </div>
+
+      <div class="bin-pill" style="background:#1e8a2d">
+        <div class="bin-dot"></div>
+        Vidro
+      </div>
+
+      <div class="bin-pill" style="background:#7a4f20">
+        <div class="bin-dot"></div>
+        Orgânico
+      </div>
     </div>
   </div>
 
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showSection('como-jogar')">🎮 Como jogar</button>
-    <button class="nav-tab" onclick="showSection('pontuacao')">⭐ Pontuação</button>
-    <button class="nav-tab" onclick="showSection('lixeiras')">🗑️ Lixeiras</button>
-    <button class="nav-tab" onclick="showSection('resultados')">🏆 Resultados</button>
+    <button class="nav-tab active" onclick="showSection(event, 'como-jogar')">🎮 Como jogar</button>
+    <button class="nav-tab" onclick="showSection(event, 'pontuacao')">⭐ Pontuação</button>
+    <button class="nav-tab" onclick="showSection(event, 'lixeiras')">🗑️ Lixeiras</button>
+    <button class="nav-tab" onclick="showSection(event, 'resultados')">🏆 Resultados</button>
   </div>
 
   <div id="como-jogar" class="section active">
@@ -447,7 +573,9 @@
 
     <div class="tip-box">
       <div class="tip-icon">💡</div>
-      <div class="tip-text"><strong>Dica:</strong> Quanto mais rápido você acertar (na 1ª tentativa), mais pontos você ganha! Preste atenção à cor da lixeira — ela diz tudo!</div>
+      <div class="tip-text">
+        <strong>Dica:</strong> Quanto mais rápido você acertar na 1ª tentativa, mais pontos você ganha! Preste atenção à cor da lixeira — ela diz tudo!
+      </div>
     </div>
   </div>
 
@@ -461,16 +589,19 @@
         <div class="score-label">pontos</div>
         <div class="score-sub">1ª tentativa 🥇</div>
       </div>
+
       <div class="score-card">
         <div class="score-val" style="color:#7a8a8b">5</div>
         <div class="score-label">pontos</div>
         <div class="score-sub">2ª tentativa 🥈</div>
       </div>
+
       <div class="score-card">
         <div class="score-val" style="color:#a06030">2</div>
         <div class="score-label">pontos</div>
         <div class="score-sub">3ª tentativa 🥉</div>
       </div>
+
       <div class="score-card">
         <div class="score-val" style="color:#cc3333">0</div>
         <div class="score-label">pontos</div>
@@ -479,6 +610,7 @@
     </div>
 
     <div class="mini-header">Pontuação máxima possível</div>
+
     <div class="score-card" style="display: flex; flex-direction: column; align-items: center; background: #f0faf0; border: 2px solid #4caf84;">
       <div class="score-val" style="color:#2d5a5e; font-size: 48px">100</div>
       <div class="score-label">pontos</div>
@@ -487,10 +619,13 @@
 
     <div class="tip-box" style="margin-top: 16px">
       <div class="tip-icon">🎯</div>
-      <div class="tip-text"><strong>Desafio:</strong> Tente fazer 100 pontos acertando tudo na primeira tentativa! Isso significa que você já sabe de cor como reciclar!</div>
+      <div class="tip-text">
+        <strong>Desafio:</strong> Tente fazer 100 pontos acertando tudo na primeira tentativa! Isso significa que você já sabe de cor como reciclar!
+      </div>
     </div>
 
     <div class="mini-header">Durante o jogo, você vê</div>
+
     <div class="step-card">
       <div style="font-size: 22px">🟠</div>
       <div class="step-text">
@@ -498,6 +633,7 @@
         <p>Mostra em qual rodada você está e quantas ainda faltam.</p>
       </div>
     </div>
+
     <div class="step-card">
       <div style="font-size: 22px">🔴</div>
       <div class="step-text">
@@ -505,6 +641,7 @@
         <p>Aparece no centro do cabeçalho e vai aumentando a cada acerto!</p>
       </div>
     </div>
+
     <div class="step-card">
       <div style="font-size: 22px">🔵</div>
       <div class="step-text">
@@ -524,21 +661,25 @@
         <div class="bin-name">Azul — Papel</div>
         <div class="bin-items">Jornal • Papelão • Revista • Rolo de papel higiênico • Caixa de leite</div>
       </div>
+
       <div class="bin-card bin-vermelho">
         <div class="bin-emoji">🧴</div>
         <div class="bin-name">Vermelho — Plástico</div>
         <div class="bin-items">Garrafa PET • Sacola • Copo descartável • Pote de iogurte • Tampa</div>
       </div>
+
       <div class="bin-card bin-amarelo">
         <div class="bin-emoji">🥫</div>
         <div class="bin-name">Amarelo — Metal</div>
         <div class="bin-items">Lata de refrigerante • Lata de atum • Papel alumínio • Fio de cobre • Tampa de metal</div>
       </div>
+
       <div class="bin-card bin-verde">
         <div class="bin-emoji">🍾</div>
         <div class="bin-name">Verde — Vidro</div>
         <div class="bin-items">Garrafa de vidro • Pote de vidro • Garrafa de cerveja • Pote de geleia</div>
       </div>
+
       <div class="bin-card bin-marrom">
         <div class="bin-emoji">🍌</div>
         <div class="bin-name">Marrom — Orgânico</div>
@@ -548,10 +689,13 @@
 
     <div class="tip-box">
       <div class="tip-icon">🌍</div>
-      <div class="tip-text"><strong>Por que reciclar?</strong> Quando separamos o lixo corretamente, materiais como papel, plástico e metal podem virar coisas novas — economizando energia e protegendo o planeta!</div>
+      <div class="tip-text">
+        <strong>Por que reciclar?</strong> Quando separamos o lixo corretamente, materiais como papel, plástico e metal podem virar coisas novas — economizando energia e protegendo o planeta!
+      </div>
     </div>
 
     <div class="mini-header">Macete para lembrar</div>
+
     <div class="step-card">
       <div style="font-size: 22px">🧠</div>
       <div class="step-text">
@@ -598,6 +742,7 @@
         <p>Clique em "Jogar Novamente" para uma nova partida com rodadas embaralhadas!</p>
       </div>
     </div>
+
     <div class="step-card">
       <div style="font-size: 22px">🏠</div>
       <div class="step-text">
@@ -608,16 +753,26 @@
 
     <div class="tip-box">
       <div class="tip-icon">♻️</div>
-      <div class="tip-text"><strong>Lembre-se:</strong> Reciclar não é só um jogo — é um hábito para a vida toda. Cada objeto no lugar certo faz diferença para o nosso planeta!</div>
+      <div class="tip-text">
+        <strong>Lembre-se:</strong> Reciclar não é só um jogo — é um hábito para a vida toda. Cada objeto no lugar certo faz diferença para o nosso planeta!
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  event.target.classList.add('active');
-}
+  function showSection(event, id) {
+    document.querySelectorAll('.section').forEach(function(section) {
+      section.classList.remove('active');
+    });
+
+    document.querySelectorAll('.nav-tab').forEach(function(tab) {
+      tab.classList.remove('active');
+    });
+
+    document.getElementById(id).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
 </script>
+</body>
+</html>
