@@ -260,6 +260,150 @@
             border-color:#4CAF50 !important;
         }
 
+        /* Estilos do Menu Inicial */
+        .start-menu {
+            text-align: center;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .start-menu h1 {
+            color: #1e3c3f;
+            margin-bottom: 40px;
+            font-size: 42px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .menu-btn {
+            padding: 18px 30px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 35px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .play-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .play-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .tutorial-btn {
+            background: #ffb347;
+            color: #1e3c3f;
+        }
+
+        .tutorial-btn:hover {
+            background: #ffa726;
+            transform: scale(1.05);
+        }
+
+        .name-input {
+            padding: 15px;
+            border-radius: 20px;
+            border: 3px solid #2d5a5e;
+            font-size: 20px;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #1e3c3f;
+            outline: none;
+        }
+
+        .name-input:focus {
+            border-color: #ffb347;
+        }
+
+        .final-message {
+            font-size: 24px;
+            color: #1e3c3f;
+            margin: 20px 0 30px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        /* Estilos do Modal de Tutorial */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-container {
+            background: white;
+            width: 90%;
+            max-width: 800px;
+            height: 85%;
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 35px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+            background: #ff6f61;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            line-height: 1;
+            box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .modal-close:hover {
+            transform: scale(1.1);
+        }
+
+        .modal-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
     </style>
     <script>
         function normalizarTexto(texto){
@@ -276,82 +420,111 @@
 
 <div class="game-container">
 
-    <a class="manual-btn" href="manual_jogo_reciclagem.html" target="_blank" title="Abrir manual do jogo">
-        ?
-    </a>
-
-    <div class="header">
-        <div class="round-info" id="roundDisplay">Rodada 1/10</div>
-        <div class="score-info" id="scoreDisplay">0 Pontos</div>
-        <div class="attempts-info" id="attemptsDisplay">1ª tentativa: 10 pontos</div>
+    <!-- Menu Inicial -->
+    <div id="startMenu" class="start-menu">
+        <h1>♻️ Jogo de Reciclagem</h1>
+        <input type="text" id="playerName" class="name-input" placeholder="Digite seu nome...">
+        <div class="menu-buttons">
+            <button class="menu-btn play-btn" onclick="comecarJogo()">
+                🎮 JOGAR
+            </button>
+            <button class="menu-btn tutorial-btn" onclick="abrirTutorial()">
+                📖 TUTORIAL
+            </button>
+        </div>
     </div>
 
-    <div id="gameArea">
+    <!-- Conteúdo do Jogo -->
+    <div id="gameContent" class="hidden">
 
-        <div class="lixeira-section">
-            <div class="lixeira-title">Arraste um item para a lixeira:</div>
+        <button class="manual-btn" onclick="abrirTutorial()" title="Abrir manual do jogo">
+            ?
+        </button>
 
-            <div class="lixeira-card" id="lixeiraAtual">
+        <div class="header">
+            <div class="round-info" id="roundDisplay">Rodada 1/10</div>
+            <div class="score-info" id="scoreDisplay">0 Pontos</div>
+            <div class="attempts-info" id="attemptsDisplay">1ª tentativa: 10 pontos</div>
+        </div>
 
-                <div class="lixeira-icon" id="lixeiraIcon"></div>
+        <div id="gameArea">
 
-                <div class="lixeira-nome" id="lixeiraNome">Carregando...</div>
+            <div class="lixeira-section">
+                <div class="lixeira-title">Arraste um item para a lixeira:</div>
 
-                <div class="lixeira-categoria" id="lixeiraCategoria"></div>
+                <div class="lixeira-card" id="lixeiraAtual">
+
+                    <div class="lixeira-icon" id="lixeiraIcon"></div>
+
+                    <div class="lixeira-nome" id="lixeiraNome">Carregando...</div>
+
+                    <div class="lixeira-categoria" id="lixeiraCategoria"></div>
+
+                </div>
+            </div>
+
+            <div class="itens-section">
+
+                <h3 style="color:#1e3c3f;margin-bottom:15px;">
+                    Escolha um item para reciclar:
+                </h3>
+
+                <div class="itens-grid" id="itensGrid"></div>
 
             </div>
+
+            <div class="message-area" id="messageArea">
+                Arraste um item para a lixeira
+            </div>
+
+            <button class="next-round-btn" id="nextRoundBtn" onclick="proximaRodada()">
+                ▶️ PRÓXIMA RODADA
+            </button>
+
         </div>
 
-        <div class="itens-section">
+        <div id="finalScoreArea" class="final-score hidden">
 
-            <h3 style="color:#1e3c3f;margin-bottom:15px;">
-                Escolha um item para reciclar:
-            </h3>
+            <h2>🎮 FIM DE JOGO 🎮</h2>
 
-            <div class="itens-grid" id="itensGrid"></div>
+            <p id="finalScoreDisplay" style="font-size: 60px; font-weight: bold; color: #ff6f61; margin: 10px 0;">0</p>
+            
+            <p id="finalMessage" class="final-message"></p>
+
+            <button class="reset-btn" onclick="voltarAoMenu()">
+                🔄 JOGAR NOVAMENTE
+            </button>
 
         </div>
-
-        <div class="message-area" id="messageArea">
-            Arraste um item para a lixeira
-        </div>
-
-        <button class="next-round-btn" id="nextRoundBtn" onclick="proximaRodada()">
-            ▶️ PRÓXIMA RODADA
-        </button>
-
-    </div>
-
-    <div id="finalScoreArea" class="final-score hidden">
-
-        <h2>🎮 FIM DE JOGO 🎮</h2>
-
-        <p id="finalScoreDisplay">0</p>
-
-        <button class="reset-btn" onclick="reiniciarJogo()">
-            🔄 JOGAR NOVAMENTE
-        </button>
 
     </div>
 
 </div>
 
+<!-- Modal de Tutorial -->
+<div id="tutorialModal" class="modal-overlay" onclick="fecharTutorialFora(event)">
+    <div class="modal-container">
+        <span class="modal-close" onclick="fecharTutorial()">&times;</span>
+        <iframe src="manual_jogo_reciclagem.html" class="modal-iframe"></iframe>
+    </div>
+</div>
+
 <script>
 
-    let todasLixeiras=[];
-    let todosItens=[];
-    let itensRestantes=[];
-    let lixeiraAtual=null;
+    let todasLixeiras = [];
+    let todosItens = [];
+    let itensRestantes = [];
+    let lixeiraAtual = null;
+    let rodadasPool = [];
+    let nomeJogador = "";
 
-    let pontuacao=0;
-    let rodadaAtual=0;
+    let pontuacao = 0;
+    let rodadaAtual = 0;
 
-    const TOTAL_RODADAS=10;
+    const TOTAL_RODADAS = 10;
+    let tentativasRodada = 0;
 
-    let tentativasRodada=0;
-    let acertouRodada=false;
-
-    const valoresPontuacao=[10,5,2,0];
+    const valoresPontuacao = [10, 5, 2, 0];
 
     const roundDisplay=document.getElementById('roundDisplay');
     const scoreDisplay=document.getElementById('scoreDisplay');
@@ -412,24 +585,68 @@
         marrom:"<img src='images/lixeiras/Orgânico.jpeg'>"
     };
 
-    async function carregarDados(){
+    async function carregarDados() {
+        try {
+            const responseLixeiras = await fetch('/api/lixeiras');
+            todasLixeiras = await responseLixeiras.json();
 
-        const responseLixeiras=await fetch('http://localhost:8080/api/lixeiras');
-        todasLixeiras=await responseLixeiras.json();
+            const responseItens = await fetch('/api/itens');
+            todosItens = await responseItens.json();
+        } catch (error) {
+            console.error("Erro ao carregar dados:", error);
+            alert("Erro ao conectar com o servidor. Verifique se o backend está rodando.");
+        }
+    }
 
-        const responseItens=await fetch('http://localhost:8080/api/itens');
-        todosItens=await responseItens.json();
+    function comecarJogo() {
+        const inputNome = document.getElementById('playerName');
+        const nome = inputNome.value.trim();
+        
+        if (!nome) {
+            alert("Por favor, digite seu nome para começar!");
+            inputNome.focus();
+            return;
+        }
 
+        if (todasLixeiras.length === 0 || todosItens.length === 0) {
+            alert("Aguarde um momento, os itens ainda estão sendo carregados...");
+            return;
+        }
+
+        nomeJogador = nome;
+        
+        document.getElementById('startMenu').classList.add('hidden');
+        document.getElementById('gameContent').classList.remove('hidden');
         reiniciarJogo();
+    }
 
+    function prepararRodadas() {
+        rodadasPool = [];
+        todasLixeiras.forEach(lixeira => {
+            const cat = lixeira.categoriaAceita.trim().toLowerCase();
+            const itensDaCategoria = todosItens.filter(i => i.categoria.trim().toLowerCase() === cat);
+            
+            itensDaCategoria.forEach(item => {
+                rodadasPool.push({
+                    lixeira: lixeira,
+                    itemCorreto: item
+                });
+            });
+        });
+
+        // Embaralha as combinações lixeira-item
+        rodadasPool.sort(() => Math.random() - 0.5);
+
+        // Limita ao número total de rodadas
+        rodadasPool = rodadasPool.slice(0, TOTAL_RODADAS);
     }
 
     function reiniciarJogo(){
 
         pontuacao=0;
         rodadaAtual=0;
-        tentativasRodada=0;
-        acertouRodada=false;
+        
+        prepararRodadas();
 
         document.getElementById('gameArea').classList.remove('hidden');
         finalScoreArea.classList.add('hidden');
@@ -460,32 +677,25 @@
 
         }
 
-            rodadaAtual++;
-            tentativasRodada=0;
-            acertouRodada=false;
+        const rodadaInfo = rodadasPool[rodadaAtual];
+        lixeiraAtual = rodadaInfo.lixeira;
+        const itemCorreto = rodadaInfo.itemCorreto;
 
-            atualizarTentativas();
+        tentativasRodada = 0;
 
-            const indice=Math.floor(Math.random()*todasLixeiras.length);
-            lixeiraAtual=todasLixeiras[indice];
+        atualizarTentativas();
 
-            lixeiraNome.textContent="";
+        lixeiraNome.textContent="";
 
-            lixeiraIcon.innerHTML=lixeiraIcons[lixeiraAtual.cor] || "🗑️";
+        lixeiraIcon.innerHTML=lixeiraIcons[lixeiraAtual.cor] || "🗑️";
 
-            lixeiraCategoria.textContent="";
+        lixeiraCategoria.textContent="";
 
         const categoriaCorreta=lixeiraAtual.categoriaAceita.trim().toLowerCase();
-
-        const itensCorretos=todosItens.filter(item=>
-            item.categoria.trim().toLowerCase()===categoriaCorreta
-        );
 
         const itensIncorretos=todosItens.filter(item=>
             item.categoria.trim().toLowerCase()!==categoriaCorreta
         );
-
-        const itemCorreto=itensCorretos[Math.floor(Math.random()*itensCorretos.length)];
 
         const tresItensIncorretos=[...itensIncorretos]
             .sort(()=>Math.random()-0.5)
@@ -498,6 +708,8 @@
         nextRoundBtn.style.display="none";
 
         atualizarDisplay();
+
+        rodadaAtual++;
 
     }
 
@@ -541,33 +753,23 @@
 
     });
 
-    async function processarJogada(id){
+    function processarJogada(id) {
+        const item = todosItens.find(i => i.id === id);
+        if (!item) return;
 
-        const item=todosItens.find(i=>i.id===id);
+        const categoriaItem = item.categoria.trim().toLowerCase();
+        const categoriaCorreta = lixeiraAtual.categoriaAceita.trim().toLowerCase();
 
-        const categoriaItem=item.categoria.trim().toLowerCase();
-        const categoriaCorreta=lixeiraAtual.categoriaAceita.trim().toLowerCase();
-
-        if(categoriaItem===categoriaCorreta){
-
-            pontuacao+=valoresPontuacao[tentativasRodada];
-
-            messageArea.innerHTML="🎉 ACERTOU!";
-
-            nextRoundBtn.style.display="block";
-
-            scoreDisplay.textContent=`${pontuacao} Pontos`;
-
-        }else{
-
+        if (categoriaItem === categoriaCorreta) {
+            pontuacao += valoresPontuacao[tentativasRodada] || 0;
+            messageArea.innerHTML = "🎉 ACERTOU!";
+            nextRoundBtn.style.display = "block";
+            scoreDisplay.textContent = `${pontuacao} Pontos`;
+        } else {
             tentativasRodada++;
-
             atualizarTentativas();
-
-            messageArea.innerHTML="❌ ERROU!";
-
+            messageArea.innerHTML = "❌ ERROU!";
         }
-
     }
 
     function proximaRodada(){
@@ -578,17 +780,59 @@
 
     }
 
+    function voltarAoMenu() {
+        document.getElementById('gameContent').classList.add('hidden');
+        document.getElementById('startMenu').classList.remove('hidden');
+        document.getElementById('playerName').focus();
+    }
+
     function finalizarJogo(){
 
         document.getElementById('gameArea').classList.add('hidden');
 
         finalScoreArea.classList.remove('hidden');
 
-        finalScoreDisplay.textContent=pontuacao;
+        finalScoreDisplay.textContent=pontuacao + " Pontos";
+
+        let mensagem = "";
+        const nota = pontuacao / 10;
+
+        if (nota <= 5) {
+            mensagem = `Poxa ${nomeJogador}, você precisa treinar mais um pouco! ♻️`;
+        } else if (nota <= 7) {
+            mensagem = `Muito bem, ${nomeJogador}! Você foi ok e já sabe bastante! 👍`;
+        } else if (nota <= 9) {
+            mensagem = `Parabéns, ${nomeJogador}! Você foi ótimo e é um craque da reciclagem! 🌟`;
+        } else {
+            mensagem = `Incrível, ${nomeJogador}! Você fez a pontuação perfeita! Você é um mestre ambiental! 🏆`;
+        }
+
+        document.getElementById('finalMessage').textContent = mensagem;
 
     }
 
-    window.onload=carregarDados;
+    function abrirTutorial() {
+        document.getElementById('tutorialModal').style.display = 'flex';
+    }
+
+    function fecharTutorial() {
+        document.getElementById('tutorialModal').style.display = 'none';
+    }
+
+    function fecharTutorialFora(event) {
+        if (event.target.id === 'tutorialModal') {
+            fecharTutorial();
+        }
+    }
+
+    window.onload = function() {
+        carregarDados();
+        document.getElementById('playerName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                comecarJogo();
+            }
+        });
+    };
 
 </script>
 

@@ -2,18 +2,18 @@ package com.reciclagem.jogo.service;
 
 import com.reciclagem.jogo.model.Item;
 import com.reciclagem.jogo.model.Lixeira;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class JogoService {
     private List<Item> itens;
     private List<Lixeira> lixeiras;
-    private int pontuacao;
 
     public JogoService() {
         this.itens = new ArrayList<>();
         this.lixeiras = new ArrayList<>();
-        this.pontuacao = 0;
         inicializarJogo();
     }
 
@@ -59,42 +59,6 @@ public class JogoService {
         lixeiras.add(new Lixeira("verde", "vidro", "Vidro"));
         lixeiras.add(new Lixeira("amarelo", "metal", "Metal"));
         lixeiras.add(new Lixeira("marrom", "organico", "Orgânico"));
-    }
-
-    public boolean validarJogada(int itemId, String corLixeira) {
-
-        // 1. Buscar o item pelo ID
-        Item item = getItemPorId(itemId);
-
-        // 2. Buscar a lixeira pela cor
-        Lixeira lixeira = getLixeiraPorCor(corLixeira);
-
-        // 3. Verificar se o item e a lixeira existem
-        if (item == null || lixeira == null) {
-            System.out.println("Item ou lixeira não encontrados!");
-            return false;
-        }
-
-        // 4. Verificar se a lixeira aceita o item
-        boolean acertou = lixeira.aceitaItem(item);
-
-        // 5. Se acertou, aumentar pontuação
-        if (acertou) {
-            pontuacao += 10;
-            System.out.println("+10 pontos!");
-        } else {
-            System.out.println("Esse item não vai nessa lixeira!");
-        }
-
-        return acertou;
-    }
-
-    public int getPontuacao() {
-        return pontuacao;
-    }
-
-    public void resetPontuacao() {
-        this.pontuacao = 0;
     }
 
     public List<Item> getItensDisponiveis() {
