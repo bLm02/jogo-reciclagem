@@ -42,7 +42,7 @@ public class JogoService {
         // === VIDRO (5 itens) - Lixeira VERDE ===
         itens.add(new Item(16, "Garrafa de vidro", "verde", "vidro"));
         itens.add(new Item(17, "Pote de vidro", "verde", "vidro"));
-        itens.add(new Item(18, "Garrafa de cerveja", "verde", "vidro"));
+        itens.add(new Item(18, "Jarra de vidro", "verde", "vidro"));
         itens.add(new Item(19, "Caco de vidro", "verde", "vidro"));
         itens.add(new Item(20, "Pote de geleia", "verde", "vidro"));
 
