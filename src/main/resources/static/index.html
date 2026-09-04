@@ -141,14 +141,6 @@
             display:block;
         }
 
-        .lixeira-nome{
-            display:none;
-        }
-
-        .lixeira-categoria{
-            display:none;
-        }
-
         .itens-section{
             margin-bottom:15px;
         }
@@ -198,10 +190,6 @@
             font-weight:bold;
             color:#1e3c3f;
             margin-bottom:0;
-        }
-
-        .item-categoria{
-            display:none;
         }
 
         .message-area{
@@ -405,16 +393,6 @@
         }
 
     </style>
-    <script>
-        function normalizarTexto(texto){
-            return texto
-                .trim()
-                .toLowerCase()
-                .normalize('NFD')
-                .replace(/[\u0300-\u036f]/g,'')
-                .replace(/\s+/g,' ');
-        }
-    </script>
 </head>
 
 <body>
@@ -456,10 +434,6 @@
                 <div class="lixeira-card" id="lixeiraAtual">
 
                     <div class="lixeira-icon" id="lixeiraIcon"></div>
-
-                    <div class="lixeira-nome" id="lixeiraNome">Carregando...</div>
-
-                    <div class="lixeira-categoria" id="lixeiraCategoria"></div>
 
                 </div>
             </div>
@@ -512,28 +486,14 @@
 
 <script>
 
-    let todasLixeiras = [];
-    let todosItens = [];
-    let itensRestantes = [];
-    let lixeiraAtual = null;
-    let rodadasPool = [];
-    let nomeJogador = "";
-
-    let pontuacao = 0;
-    let rodadaAtual = 0;
-
-    const TOTAL_RODADAS = 10;
-    let tentativasRodada = 0;
-
-    const valoresPontuacao = [10, 5, 2, 0];
+    let sessionId = null;
+    let pontuacaoAtual = 0;
 
     const roundDisplay=document.getElementById('roundDisplay');
     const scoreDisplay=document.getElementById('scoreDisplay');
     const attemptsDisplay=document.getElementById('attemptsDisplay');
 
-    const lixeiraNome=document.getElementById('lixeiraNome');
     const lixeiraIcon=document.getElementById('lixeiraIcon');
-    const lixeiraCategoria=document.getElementById('lixeiraCategoria');
 
     const itensGrid=document.getElementById('itensGrid');
     const messageArea=document.getElementById('messageArea');
@@ -544,214 +504,62 @@
     const finalScoreArea=document.getElementById('finalScoreArea');
     const finalScoreDisplay=document.getElementById('finalScoreDisplay');
 
-    const itemIcons={
-            "papel aluminio":"<img src='images/lixos/Metal/_Papel alumínio.png' alt='Papel alumínio'>",
-            "fio de cobre":"<img src='images/lixos/Metal/Fio de cobre.png' alt='Fio de cobre'>",
-            "lata de atum":"<img src='images/lixos/Metal/Lata de atum.png' alt='Lata de atum'>",
-            "lata de refrigerante":"<img src='images/lixos/Metal/Lata de refrigerante.png' alt='Lata de refrigerante'>",
-            "tampa de metal":"<img src='images/lixos/Metal/Tampa de metal.png' alt='Tampa de metal'>",
-
-            "casca de banana":"<img src='images/lixos/Organico/casca de banana.png' alt='Casca de banana'>",
-            "casca de laranja":"<img src='images/lixos/Organico/casca de laranja.png' alt='Casca de laranja'>",
-            "casca de ovo":"<img src='images/lixos/Organico/casca de ovo.png' alt='Casca de ovo'>",
-            "resto de comida":"<img src='images/lixos/Organico/resto de comida.png' alt='Resto de comida'>",
-            "saquinho de cha":"<img src='images/lixos/Organico/Saquinho de chá.png' alt='Saquinho de chá'>",
-
-            "caixa de leite":"<img src='images/lixos/Papel/Caixa de leite.png' alt='Caixa de leite'>",
-            "caixa de papelao":"<img src='images/lixos/Papel/Caixa de papelão.png' alt='Caixa de papelão'>",
-            "jornal":"<img src='images/lixos/Papel/Jornal.png' alt='Jornal'>",
-            "revista":"<img src='images/lixos/Papel/Revista.png' alt='Revista'>",
-            "rolo de papel higienico":"<img src='images/lixos/Papel/Rolo de papel higiênico.png' alt='Rolo de papel higiênico'>",
-
-            "copo descartavel":"<img src='images/lixos/Plastico/Copo descartável.png' alt='Copo descartável'>",
-            "garrafa pet":"<img src='images/lixos/Plastico/Garrafa PET.png' alt='Garrafa PET'>",
-            "pote de iogurte":"<img src='images/lixos/Plastico/Pote de iogurte.png' alt='Pote de iogurte'>",
-            "sacola plastica":"<img src='images/lixos/Plastico/Sacola plastica.png' alt='Sacola plastica'>",
-            "tampa de garrafa":"<img src='images/lixos/Plastico/Tampa de garrafa.png' alt='Tampa de garrafa'>",
-
-            "caco de vidro":"<img src='images/lixos/Vidro/Caco de vidro.png' alt='Caco de vidro'>",
-            "jarra de vidro":"<img src='images/lixos/Vidro/Jarra de vidro.png' alt='Jarra de vidro'>",
-            "garrafa de vidro":"<img src='images/lixos/Vidro/Garrafa de vidro.png' alt='Garrafa de vidro'>",
-            "pote de geleia":"<img src='images/lixos/Vidro/Pote de geleia.png' alt='Pote de geleia'>",
-            "pote de vidro":"<img src='images/lixos/Vidro/Pote de vidro.png' alt='Pote de vidro'>",
-
-            default:"📦"
-        };
-
-    const lixeiraIcons={
-        azul:"<img src='images/lixeiras/Papel.jpeg'>",
-        vermelho:"<img src='images/lixeiras/Plástico.jpeg'>",
-        amarelo:"<img src='images/lixeiras/Metal.jpeg'>",
-        verde:"<img src='images/lixeiras/Vidro.jpeg'>",
-        marrom:"<img src='images/lixeiras/Orgânico.jpeg'>"
-    };
-
-    const itemIconsPorId={
-        18:itemIcons["jarra de vidro"]
-    };
-
-    function obterIconeItem(item){
-        const chave=normalizarTexto(item.nome);
-
-        if(itemIcons[chave]){
-            return itemIcons[chave];
-        }
-
-        if(itemIconsPorId[item.id]){
-            return itemIconsPorId[item.id];
-        }
-
-        if(chave.includes("jarra") && chave.includes("vidro")){
-            return itemIcons["jarra de vidro"];
-        }
-
-        return itemIcons.default;
-    }
-
-    async function carregarDados() {
-        try {
-            const responseLixeiras = await fetch('/api/lixeiras');
-            todasLixeiras = await responseLixeiras.json();
-
-            const responseItens = await fetch('/api/itens');
-            todosItens = await responseItens.json();
-        } catch (error) {
-            console.error("Erro ao carregar dados:", error);
-            alert("Erro ao conectar com o servidor. Verifique se o backend está rodando.");
-        }
-    }
-
-    function comecarJogo() {
+    async function comecarJogo() {
         const inputNome = document.getElementById('playerName');
         const nome = inputNome.value.trim();
-        
+
         if (!nome) {
             alert("Por favor, digite seu nome para começar!");
             inputNome.focus();
             return;
         }
 
-        if (todasLixeiras.length === 0 || todosItens.length === 0) {
-            alert("Aguarde um momento, os itens ainda estão sendo carregados...");
-            return;
-        }
-
-        nomeJogador = nome;
-        
-        document.getElementById('startMenu').classList.add('hidden');
-        document.getElementById('gameContent').classList.remove('hidden');
-        reiniciarJogo();
-    }
-
-    function prepararRodadas() {
-        rodadasPool = [];
-        todasLixeiras.forEach(lixeira => {
-            const cat = lixeira.categoriaAceita.trim().toLowerCase();
-            const itensDaCategoria = todosItens.filter(i => i.categoria.trim().toLowerCase() === cat);
-            
-            itensDaCategoria.forEach(item => {
-                rodadasPool.push({
-                    lixeira: lixeira,
-                    itemCorreto: item
-                });
+        try {
+            const response = await fetch('/api/jogo/iniciar', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nomeJogador: nome })
             });
-        });
 
-        // Embaralha as combinações lixeira-item
-        rodadasPool.sort(() => Math.random() - 0.5);
+            if (!response.ok) {
+                throw new Error('Falha ao iniciar o jogo');
+            }
 
-        // Limita ao número total de rodadas
-        rodadasPool = rodadasPool.slice(0, TOTAL_RODADAS);
-    }
+            const dados = await response.json();
+            sessionId = dados.sessionId;
+            pontuacaoAtual = 0;
 
-    function reiniciarJogo(){
+            document.getElementById('startMenu').classList.add('hidden');
+            document.getElementById('gameContent').classList.remove('hidden');
+            document.getElementById('gameArea').classList.remove('hidden');
+            finalScoreArea.classList.add('hidden');
+            scoreDisplay.textContent = "0 Pontos";
 
-        pontuacao=0;
-        rodadaAtual=0;
-        
-        prepararRodadas();
-
-        document.getElementById('gameArea').classList.remove('hidden');
-        finalScoreArea.classList.add('hidden');
-
-        scoreDisplay.textContent="0 Pontos";
-        messageArea.innerHTML="Arraste um item para a lixeira";
-        nextRoundBtn.style.display="none";
-
-        novaRodada();
-
-    }
-
-        function atualizarTentativas(){
-
-            const tentativaAtual=tentativasRodada+1;
-            const pontosAtual=valoresPontuacao[tentativasRodada] || 0;
-
-            attemptsDisplay.textContent=`${tentativaAtual}ª tentativa: ${pontosAtual} pontos`;
-
+            exibirRodada(dados.rodada);
+        } catch (error) {
+            console.error("Erro ao iniciar jogo:", error);
+            alert("Erro ao conectar com o servidor. Verifique se o backend está rodando.");
         }
-
-        function novaRodada(){
-
-        if(rodadaAtual>=TOTAL_RODADAS){
-
-            finalizarJogo();
-            return;
-
-        }
-
-        const rodadaInfo = rodadasPool[rodadaAtual];
-        lixeiraAtual = rodadaInfo.lixeira;
-        const itemCorreto = rodadaInfo.itemCorreto;
-
-        tentativasRodada = 0;
-
-        atualizarTentativas();
-
-        lixeiraNome.textContent="";
-
-        lixeiraIcon.innerHTML=lixeiraIcons[lixeiraAtual.cor] || "🗑️";
-
-        lixeiraCategoria.textContent="";
-
-        const categoriaCorreta=lixeiraAtual.categoriaAceita.trim().toLowerCase();
-
-        const itensIncorretos=todosItens.filter(item=>
-            item.categoria.trim().toLowerCase()!==categoriaCorreta
-        );
-
-        const tresItensIncorretos=[...itensIncorretos]
-            .sort(()=>Math.random()-0.5)
-            .slice(0,3);
-
-        itensRestantes=[itemCorreto,...tresItensIncorretos]
-            .sort(()=>Math.random()-0.5);
-
-        messageArea.innerHTML="Arraste um item para a lixeira";
-        nextRoundBtn.style.display="none";
-
-        atualizarDisplay();
-
-        rodadaAtual++;
-
     }
 
-    function atualizarDisplay(){
+    function exibirRodada(rodada){
 
-        roundDisplay.textContent=`Rodada ${rodadaAtual}/${TOTAL_RODADAS}`;
+        roundDisplay.textContent=`Rodada ${rodada.numeroRodada}/${rodada.totalRodadas}`;
+        atualizarTentativas(rodada.tentativaAtual, rodada.pontosProximaTentativa);
+
+        lixeiraIcon.innerHTML=`<img src="${rodada.lixeira.imagemUrl}" alt="${rodada.lixeira.nome}">`;
 
         itensGrid.innerHTML='';
 
-        itensRestantes.forEach(item=>{
+        rodada.opcoes.forEach(item=>{
 
             const card=document.createElement('div');
             card.className='item-card';
             card.draggable=true;
 
             card.innerHTML=`
-    <div class="item-icon">${obterIconeItem(item)}</div>
+    <div class="item-icon"><img src="${item.imagemUrl}" alt="${item.nome}"></div>
     <div class="item-nome">${item.nome}</div>
-    <div class="item-categoria">${item.categoria}</div>
     `;
 
             card.addEventListener('dragstart',e=>{
@@ -762,6 +570,13 @@
 
         });
 
+        messageArea.innerHTML="Arraste um item para a lixeira";
+        nextRoundBtn.style.display="none";
+
+    }
+
+    function atualizarTentativas(tentativaAtual, pontosProximaTentativa){
+        attemptsDisplay.textContent=`${tentativaAtual}ª tentativa: ${pontosProximaTentativa} pontos`;
     }
 
     lixeiraCard.addEventListener('dragover',e=>{
@@ -776,61 +591,78 @@
 
     });
 
-    function processarJogada(id) {
-        const item = todosItens.find(i => i.id === id);
-        if (!item) return;
+    async function processarJogada(itemId) {
+        if (!sessionId) return;
 
-        const categoriaItem = item.categoria.trim().toLowerCase();
-        const categoriaCorreta = lixeiraAtual.categoriaAceita.trim().toLowerCase();
+        try {
+            const response = await fetch(`/api/jogo/${sessionId}/jogada`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ itemId })
+            });
 
-        if (categoriaItem === categoriaCorreta) {
-            pontuacao += valoresPontuacao[tentativasRodada] || 0;
-            messageArea.innerHTML = "🎉 ACERTOU!";
-            nextRoundBtn.style.display = "block";
-            scoreDisplay.textContent = `${pontuacao} Pontos`;
-        } else {
-            tentativasRodada++;
-            atualizarTentativas();
-            messageArea.innerHTML = "❌ ERROU!";
+            if (!response.ok) {
+                throw new Error('Falha ao processar jogada');
+            }
+
+            const resultado = await response.json();
+            pontuacaoAtual = resultado.pontuacaoTotal;
+            scoreDisplay.textContent = `${pontuacaoAtual} Pontos`;
+
+            if (resultado.acertou) {
+                messageArea.innerHTML = "🎉 ACERTOU!";
+
+                if (resultado.jogoFinalizado) {
+                    finalizarJogo(resultado.mensagemFinal);
+                } else {
+                    nextRoundBtn.style.display = "block";
+                }
+            } else {
+                atualizarTentativas(resultado.tentativaAtual, resultado.pontosProximaTentativa);
+                messageArea.innerHTML = "❌ ERROU!";
+            }
+        } catch (error) {
+            console.error("Erro ao processar jogada:", error);
+            alert("Erro ao conectar com o servidor.");
         }
     }
 
-    function proximaRodada(){
+    async function proximaRodada(){
+        if (!sessionId) return;
 
         nextRoundBtn.style.display="none";
 
-        novaRodada();
+        try {
+            const response = await fetch(`/api/jogo/${sessionId}/proxima-rodada`, { method: 'POST' });
 
+            if (!response.ok) {
+                throw new Error('Falha ao avançar rodada');
+            }
+
+            const rodada = await response.json();
+            exibirRodada(rodada);
+        } catch (error) {
+            console.error("Erro ao avançar rodada:", error);
+            alert("Erro ao conectar com o servidor.");
+        }
     }
 
     function voltarAoMenu() {
+        sessionId = null;
         document.getElementById('gameContent').classList.add('hidden');
         document.getElementById('startMenu').classList.remove('hidden');
         document.getElementById('playerName').focus();
     }
 
-    function finalizarJogo(){
+    function finalizarJogo(mensagemFinal){
 
         document.getElementById('gameArea').classList.add('hidden');
 
         finalScoreArea.classList.remove('hidden');
 
-        finalScoreDisplay.textContent=pontuacao + " Pontos";
+        finalScoreDisplay.textContent=pontuacaoAtual + " Pontos";
 
-        let mensagem = "";
-        const nota = pontuacao / 10;
-
-        if (nota <= 5) {
-            mensagem = `Poxa ${nomeJogador}, você precisa treinar mais um pouco! ♻️`;
-        } else if (nota <= 7) {
-            mensagem = `Muito bem, ${nomeJogador}! Você foi ok e já sabe bastante! 👍`;
-        } else if (nota <= 9) {
-            mensagem = `Parabéns, ${nomeJogador}! Você foi ótimo e é um craque da reciclagem! 🌟`;
-        } else {
-            mensagem = `Incrível, ${nomeJogador}! Você fez a pontuação perfeita! Você é um mestre ambiental! 🏆`;
-        }
-
-        document.getElementById('finalMessage').textContent = mensagem;
+        document.getElementById('finalMessage').textContent = mensagemFinal;
 
     }
 
@@ -849,7 +681,6 @@
     }
 
     window.onload = function() {
-        carregarDados();
         document.getElementById('playerName').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 comecarJogo();

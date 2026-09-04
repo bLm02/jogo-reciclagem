@@ -4,18 +4,19 @@ public class Lixeira {
     private String cor;
     private String categoriaAceita;
     private String nome; // "Plástico", "Papel", etc.
+    private String imagemUrl;
 
-    public Lixeira(String cor, String categoriaAceita, String nome) {
+    public Lixeira(String cor, String categoriaAceita, String nome, String imagemUrl) {
         this.cor = cor;
         this.categoriaAceita = categoriaAceita;
         this.nome = nome;
+        this.imagemUrl = imagemUrl;
     }
 
     public boolean aceitaItem(Item item) {
         return this.categoriaAceita.equalsIgnoreCase(item.getCategoria());
     }
 
-    // Getters e Setters
     public String getCor() {
         return cor;
     }
@@ -40,12 +41,21 @@ public class Lixeira {
         this.nome = nome;
     }
 
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
+    }
+
     @Override
     public String toString() {
         return "Lixeira{" +
                 "cor='" + cor + '\'' +
                 ", categoriaAceita='" + categoriaAceita + '\'' +
                 ", nome='" + nome + '\'' +
+                ", imagemUrl='" + imagemUrl + '\'' +
                 '}';
     }
 }

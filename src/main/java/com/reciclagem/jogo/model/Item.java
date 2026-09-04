@@ -3,17 +3,16 @@ package com.reciclagem.jogo.model;
 public class Item {
     private int id;
     private String nome;
-    private String cor;
     private String categoria; // plastico, papel, vidro, metal, organico
+    private String imagemUrl;
 
-    public Item(int id, String nome, String cor, String categoria) {
+    public Item(int id, String nome, String categoria, String imagemUrl) {
         this.id = id;
         this.nome = nome;
-        this.cor = cor;
         this.categoria = categoria;
+        this.imagemUrl = imagemUrl;
     }
 
-    // Getters e Setters
     public int getId() {
         return id;
     }
@@ -30,14 +29,6 @@ public class Item {
         this.nome = nome;
     }
 
-    public String getCor() {
-        return cor;
-    }
-
-    public void setCor(String cor) {
-        this.cor = cor;
-    }
-
     public String getCategoria() {
         return categoria;
     }
@@ -46,13 +37,21 @@ public class Item {
         this.categoria = categoria;
     }
 
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", cor='" + cor + '\'' +
                 ", categoria='" + categoria + '\'' +
+                ", imagemUrl='" + imagemUrl + '\'' +
                 '}';
     }
 }
